@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Математическо нашествие</title>
+<iframe width="0" height="0" src="Strange Noise-SoundBible.com-229408508.mp3" frameborder="0" allowfullscreen></iframe>﻿
+<link href="ship.ico" rel="shortcut icon" type="image/x-icon">
+<link href="U1.css" rel="stylesheet">
+<link href="menu.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="jquery.ui.effect.min.js"></script>
+<script src="jquery.ui.effect-drop.min.js"></script>
+<script src="wb.rotate.min.js"></script>
+<script src="fancybox/jquery.easing-1.3.pack.js"></script>
+<link rel="stylesheet" href="fancybox/jquery.fancybox-1.3.4.css">
+<script src="fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script src="fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<script src="wwb11.min.js"></script>
+<script>
+function displaylightbox(url, options)
+{
+   options.padding = 0;
+   options.autoScale = true;
+   options.href = url;
+   options.type = 'iframe';
+   $.fancybox(options);
+}
+</script>
+<script>
+$(document).ready(function()
+{
+   function Bookmark1Scroll()
+   {
+      var $obj = $("#wb_Bookmark1");
+      if (!$obj.hasClass("in-viewport") && $obj.inViewPort(false))
+      {
+         $obj.addClass("in-viewport");
+         Animate('wb_ship', '140', '230', '640', '356', '', 1000, '');
+         ShowObjectWithEffect('wb_zag', 1, 'dropup', 500);
+         Animate('wb_Image1', '800', '400', '200', '200', '', 2000, '');
+      }
+   }
+   Bookmark1Scroll();
+   $(window).scroll(function(event)
+   {
+      Bookmark1Scroll();
+   });
+   $("a[href*='#Bookmark1']").click(function(event)
+   {
+      event.preventDefault();
+      $('html, body').stop().animate({ scrollTop: $('#wb_Bookmark1').offset().top }, 600, 'linear');
+   });
+});
+</script>
+</head>
+<body>
+<div id="container">
+<div id="wb_ship" style="position:absolute;left:908px;top:18px;width:47px;height:26px;z-index:0;">
+<img src="images/Spaceship3.gif" id="ship" alt=""></div>
+<div id="RollOver1" style="position:absolute;left:265px;top:570px;width:440px;height:60px;overflow:hidden;z-index:1">
+<a href="./start.html">
+<img class="hover" alt="" src="images/TextArt2.png">
+<span><img alt="" src="images/TextArt1.png"></span>
+</a>
+</div>
+<div id="wb_zag" style="position:absolute;left:162px;top:0px;width:647px;height:214px;visibility:hidden;z-index:2;">
+<img src="images/img0001.png" id="zag" alt="&#1052;&#1040;&#1058;&#1045;&#1052;&#1040;&#1058;&#1048;&#1063;&#1045;&#1057;&#1050;&#1054; &#1053;&#1040;&#1064;&#1045;&#1057;&#1058;&#1042;&#1048;&#1045;" title="&#1052;&#1040;&#1058;&#1045;&#1052;&#1040;&#1058;&#1048;&#1063;&#1045;&#1057;&#1050;&#1054; &#1053;&#1040;&#1064;&#1045;&#1057;&#1058;&#1042;&#1048;&#1045;" style="width:647px;height:214px;"></div>
+<div id="wb_Bookmark1" style="position:absolute;left:464px;top:0px;width:21px;height:18px;z-index:3;">
+<a id="Bookmark1" style="visibility:hidden">&nbsp;</a>
+</div>
+<div id="wb_ClipArt1" style="position:absolute;left:810px;top:0px;width:71px;height:64px;z-index:4;">
+<a href="javascript:displaylightbox('./help.html',{'width':877,'height':549})" target="_self" title="&#1055;&#1086;&#1084;&#1086;&#1097;"><img class="hover" src="images/img0002_hover.png" alt="" style="border-width:0;width:71px;height:64px;"><span><img src="images/img0002.png" id="ClipArt1" alt="" style="width:71px;height:64px;"></span></a></div>
+<div id="wb_Image1" style="position:absolute;left:600px;top:6px;width:27px;height:27px;z-index:5;">
+<a href="http://www.pmgvt.org/" target="_blank" title="&#1050;&#1098;&#1084; &#1089;&#1072;&#1081;&#1090;&#1072; &#1085;&#1072; &#1055;&#1052;&#1043; &quot;&#1042;. &#1044;&#1088;&#1091;&#1084;&#1077;&#1074;&quot;, &#1042;. &#1058;&#1098;&#1088;&#1085;&#1086;&#1074;&#1086;" onmouseover="Animate('wb_Image1', '', '', '', '', '', 500, '+90');return false;" onmouseout="Animate('wb_Image1', '', '', '', '', '', 500, '0');return false;"><img src="images/Satellite_300.gif" id="Image1" alt=""></a></div>
+<div id="wb_ClipArt3" style="position:absolute;left:884px;top:11px;width:51px;height:42px;z-index:6;">
+<a href="javascript:displaylightbox('./contact.php',{'width':877,'height':549})" target="_self" title="&#1050;&#1086;&#1085;&#1090;&#1072;&#1082;&#1090;"><img class="hover" src="images/img0003_hover.png" alt="" style="border-width:0;width:51px;height:42px;"><span><img src="images/img0003.png" id="ClipArt3" alt="" style="width:51px;height:42px;"></span></a></div>
+<div id="wb_ClipArt2" style="position:absolute;left:0px;top:8px;width:46px;height:42px;z-index:7;">
+<a href="./index.html" title="&#1053;&#1072;&#1095;&#1072;&#1083;&#1086;"><img class="hover" src="images/img0004_hover.png" alt="" style="border-width:0;width:46px;height:42px;"><span><img src="images/img0004.png" id="ClipArt2" alt="" style="width:46px;height:42px;"></span></a></div>
+<div id="wb_ClipArt4" style="position:absolute;left:947px;top:10px;width:50px;height:43px;z-index:8;">
+<a href="javascript:displaylightbox('./sitemap.html',{'width':877,'height':549})" target="_self"><img class="hover" src="images/img0005_hover.png" alt="" style="border-width:0;width:50px;height:43px;"><span><img src="images/img0005.png" id="ClipArt4" alt="" style="width:50px;height:43px;"></span></a></div>
+<div id="wb_Text1" style="position:absolute;left:813px;top:56px;width:65px;height:11px;text-align:center;z-index:9;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:9.3px;"><strong>КОНТРОЛИ</strong></span></div>
+<div id="wb_Text2" style="position:absolute;left:877px;top:56px;width:65px;height:11px;text-align:center;z-index:10;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:9.3px;"><strong>КОНТАКТИ</strong></span></div>
+<div id="wb_Text3" style="position:absolute;left:939px;top:56px;width:65px;height:22px;text-align:center;z-index:11;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:9.3px;"><strong>КАРТА НА САЙТА</strong></span></div>
+<div id="wb_Text4" style="position:absolute;left:8px;top:56px;width:65px;height:11px;z-index:12;text-align:left;">
+<span style="color:#FFFFFF;font-family:Arial;font-size:9.3px;"><strong>НАЧАЛО</strong></span></div>
+</div>
+</body>
+</html>

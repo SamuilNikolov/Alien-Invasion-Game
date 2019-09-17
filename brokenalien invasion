@@ -1,0 +1,579 @@
+var ship;
+var nums = [];
+var shipNumAliens = 0;
+var firstRandNumAliens = 0;
+var secondRandNumAliens = 0;
+var indexNumAliens = 0;
+var numsZorgs = [];
+var shipNumZorgs = 0;
+var firstRandNumZorgs = 0;
+var secondRandNumZorgs = 0;
+var indexNumZorgs = 0;
+var numsMeduzas = [];
+var shipNumMeduzas = 0;
+var firstRandNumMeduzas = 0;
+var secondRandNumMeduzas = 0;
+var indexNumMeduzas = 0;
+var colorBullet;
+var bgMusic;
+var hitShipSound;
+var gameOverSound;
+var winSound;
+var shipHealth = 3;
+var bg;
+var machineDown = false;
+var otherDirection = false;
+var ammo=60;
+var points = 0;
+var flyingMachine=[];
+var aliens = [];
+var zorgs = [];
+var meduzas = [];
+var lazers =[];
+var bullets = [];
+var zorgHealth = [];
+var meduzaHealth = [];
+var flyingMachineHealth = [];
+var explozionAlien ;
+var hitZorg;
+var explozionUfo;
+var hitMeduza;
+var explozionUfo;
+var shooting;
+var flying;
+var img;
+var win=false;
+var alienImgs=[];
+var zorgImgs=[];
+var meduzaImgs=[];
+var flyingMachineImg;
+var rAlien = 0;
+var rZorg = 0;
+var rMeduza = 0;
+var mil = 0;
+var clearScreen = false;
+function preload() {
+
+  bg = loadImage("spaceBackground.jpg");
+  hitShipSound=loadSound("Roundhouse Kick-SoundBible.com-1663225804.mp3");
+  bgMusic=loadSound("bgMusic.mp3");
+  explozionAlien= loadSound("Shotgun_Blast-Jim_Rogers-1914772763.mp3");
+  hitZorg= loadSound("punch_or_whack_-Vladimir-403040765.mp3");
+  shooting = loadSound("Silencer-SoundBible.com-1632156458.mp3");
+  hitMeduza = loadSound("Strong_Punch-Mike_Koenig-574430706.mp3")
+  explozionUfo = loadSound("Martian_Death_Ray-Mike_Koenig-937891031.mp3")
+  img = loadImage("ship.png");
+  alienImgs[0] = loadImage("alien1.png");
+  alienImgs[1] = loadImage("alien2.png");
+  zorgImgs[0] = loadImage("zorg1.png");
+  zorgImgs[1] = loadImage("zorg2.png");
+  meduzaImgs[0] = loadImage("meduza1.png");
+  meduzaImgs[1] = loadImage("meduza2.png");
+flyingMachineImg=loadImage("allaliens.png");
+flying=loadSound("Strange Noise-SoundBible.com-229408508.mp3");
+winSound=loadSound("341984__unadamlar__winning.wav");
+gameOverSound=loadSound("382310__myfox14__game-over-arcade.wav");
+}
+function setup(){
+  createCanvas(windowWidth,windowHeight);
+  for (var i = 0; i < 6; i++) {
+    nums[i] = int(random(1,11));
+  }
+  indexNumAliens = int(random(0,6));
+console.log(nums[indexNumAliens]);
+shipNumAliens = nums[indexNumAliens];
+firstRandNumAliens = int(random(0,shipNumAliens+1));
+console.log(firstRandNumAliens);
+secondRandNumAliens = shipNumAliens-firstRandNumAliens;
+console.log(secondRandNumAliens);
+for (var i = 0; i < 7; i++) {
+  numsZorgs[i] = int(random(1,11));
+}
+indexNumZorgs = int(random(0,7));
+console.log(nums[indexNumZorgs]);
+shipNumZorgs = numsZorgs[indexNumZorgs];
+firstRandNumZorgs = int(random(0,shipNumZorgs+1));
+console.log(firstRandNumZorgs);
+secondRandNumZorgs = shipNumZorgs-firstRandNumZorgs;
+console.log(secondRandNumZorgs);
+for (var i = 0; i < 8; i++) {
+  numsMeduzas[i] = int(random(1,11));
+}
+indexNumMeduzas = int(random(0,7));
+console.log(nums[indexNumMeduzas]);
+shipNumMeduzas = numsMeduzas[indexNumMeduzas];
+firstRandNumMeduzas = int(random(0,shipNumMeduzas+1));
+console.log(firstRandNumMeduzas);
+secondRandNumZorgs = shipNumMeduzas-firstRandNumMeduzas;
+console.log(secondRandNumMeduzas);
+  ship=new Ship(width/2,30);
+  setTimeout(animAliens, 1000);
+  setTimeout(animZorgs, 1000);
+  setTimeout(animMeduzas, 1000);
+  setTimeout(attack,1000);
+  for (var i = 0; i < 1; i++) {
+    flyingMachineHealth[i]=3;
+     flyingMachine[0]=new Machine(80+250,20,flyingMachineImg);
+   }
+   bgMusic.setVolume(0.1);
+bgMusic.play();
+//  bullet = new Bullet(width/2,height/2);
+  for (var i = 0; i < 6; i++) {
+    rAlien =(rAlien+1)%2;
+    aliens[i]= new Alien(i*120+130,160,alienImgs[rAlien]);
+  }
+  for (var i = 0; i < 8; i++) {
+    rMeduza =(rMeduza+1)%2;
+    meduzaHealth[i]=3;
+    meduzas[i]= new Meduza(i*80+50,70,meduzaImgs[rMeduza],meduzaHealth[i]);
+  }
+  for (var i = 0; i < 7; i++) {
+    rZorg =(rZorg+1)%2;
+    zorgHealth[i]=2;
+    zorgs[i]= new Zorg(i*80+90,120,zorgImgs[rZorg],zorgHealth[i]);
+  }
+
+}
+function draw()
+{
+  if (clearScreen) {
+    clear();
+    textSize(70);
+    fill(255,0,0);
+    text('ТИ ЗАГУБИ!',100,200);
+    text('Спечелени точки :'+points,100,400);
+    bgMusic.stop();
+    explozionAlien.stop();
+    gameOverSound.play();
+    ammo=0;
+    draw.stop();
+
+  }
+else if (win) {
+
+    clear();
+    textSize(70);
+    fill(0,255,0);
+    text('ТИ ПОБЕДИ!',100,200);
+    ammo=0;
+    bgMusic.stop();
+    winSound.play();
+    draw.stop();
+  }
+  else {
+
+    mil=millis();
+    //console.log(mil);
+    background(bg);
+    fill(255);
+    text('Муниции: '+ammo,20,30);
+    text('Точки: '+points,windowWidth-240,30);
+    text('Живот: '+shipHealth,windowWidth-200,windowHeight-50);
+	textSize(25);
+  if(aliens.length != 0)
+	text(firstRandNumAliens+' + '+secondRandNumAliens,ship.x-28,ship.y+45);
+else if(zorgs.length !=0) {
+  text(firstRandNumZorgs+' + '+secondRandNumZorgs,ship.x-28,ship.y+45);
+}
+else {
+  text(firstRandNumMeduzas+' + '+secondRandNumMeduzas,ship.x-28,ship.y+45);
+}
+
+
+	for(var i =0; i<aliens.length; i++){
+		fill(255);
+
+		textSize(20);
+		if(nums[i]<=9){
+
+
+			text(nums[i],aliens[i].x-6,aliens[i].y+8);
+		}
+	else
+	{
+		text(nums[i],aliens[i].x-12,aliens[i].y+8);
+	}
+	}
+  for(var i =0; i<zorgs.length; i++){
+		fill(255);
+
+		textSize(20);
+		if(numsZorgs[i]<=9 && aliens.length == 0){
+
+
+			text(numsZorgs[i],zorgs[i].x-6,zorgs[i].y+8);
+		}
+	else if(aliens.length == 0)
+	{
+		text(numsZorgs[i],zorgs[i].x-12,zorgs[i].y+8);
+	}
+	}
+  for(var i =0; i<meduzas.length; i++){
+		fill(255);
+
+		textSize(20);
+		if(numsMeduzas[i]<=9 && zorgs.length == 0){
+
+
+			text(numsMeduzas[i],meduzas[i].x-6,meduzas[i].y+8);
+		}
+	else if(zorgs.length == 0)
+	{
+		text(numsMeduzas[i],meduzas[i].x-12,meduzas[i].y+8);
+	}
+	}
+    if (ship.x>windowWidth-40) {
+      ship.x=20;
+    }
+    if (ship.x<0) {
+      ship.x=windowWidth-60;
+    }
+    ship.show();
+      ship.move();
+
+for (var i = 0; i < lazers.length; i++) {
+  lazers[i].show();
+  lazers[i].shoot();
+
+  if (lazers[i].hits(ship[0])) {
+    shipHealth--;
+    if (shipHealth==0) {
+clearScreen=true;
+}else {
+  hitShipSound.play();
+}
+  lazers[i].dissappear();
+  }
+
+
+
+}
+
+
+    for (var i = 0; i < bullets.length; i++){
+      bullets[i].show();
+      bullets[i].shoot();
+      for (var j = 0; j < aliens.length; j++) {
+       if (bullets[i].hitsAlien(aliens[j]) && shipNumAliens == nums[j]) {
+  aliens[j].die();
+  console.log(nums);
+  nums.splice(j,1);
+  indexNumAliens = int(random(0,nums.length));
+console.log(nums[indexNumAliens]);
+shipNumAliens = nums[indexNumAliens];
+firstRandNumAliens = int(random(0,shipNumAliens+1));
+console.log(firstRandNumAliens);
+secondRandNumAliens = shipNumAliens-firstRandNumAliens;
+  explozionAlien.play();
+  if (aliens[j].hits(ship)) {
+  ship.die();
+
+  }
+  bullets[i].dissappear();
+  }
+
+  }
+    }
+    for (var i = 0; i < bullets.length; i++){
+      bullets[i].show();
+      bullets[i].shoot();
+      for (var j = 0; j < zorgs.length; j++) {
+       if (bullets[i].hitsZorg(zorgs[j]) && aliens.length == 0 && shipNumZorgs == numsZorgs[j]) {
+zorgHealth[j]--;
+
+if (zorgHealth[j]==0) {
+  zorgs[j].die();
+  zorgHealth[j] = zorgHealth[j+1];
+  numsZorgs.splice(j,1);
+  indexNumZorgs = int(random(0,numsZorgs.length));
+console.log(numsZorgs[indexNumZorgs]);
+shipNumZorgs = numsZorgs[indexNumZorgs];
+firstRandNumZorgs = int(random(0,shipNumZorgs+1));
+console.log(firstRandNumZorgs);
+secondRandNumZorgs = shipNumZorgs-firstRandNumZorgs;
+  explozionAlien.play();
+}
+else {
+  hitZorg.play();
+}
+
+
+    if (zorgs[j].hits(ship)) {
+    ship.die();
+
+    }
+    bullets[i].dissappear();
+    }
+
+    }
+    }
+    for (var i = 0; i < bullets.length; i++){
+      bullets[i].show();
+      bullets[i].shoot();
+      for (var j = 0; j < meduzas.length; j++) {
+       if (bullets[i].hitsMeduza(meduzas[j]) && zorgs.length == 0) {
+         meduzaHealth[j]--;
+
+         if (meduzaHealth[j]==0) {
+           meduzas[j].die();
+           meduzaHealth[j] = meduzaHealth[j+1];
+           numsMeduzas.splice(j,1);
+           indexNumMeduzas = int(random(0,numsMeduzas.length));
+         console.log(numsMeduzas[indexNumMeduzas]);
+         shipNumMeduzas = numsMeduzas[indexNumMeduzas];
+         firstRandNumMeduzas = int(random(0,shipNumMeduzas+1));
+         console.log(firstRandNumMeduzas);
+         secondRandNumMeduzas = shipNumMeduzas-firstRandNumMeduzas;
+           explozionAlien.play();
+         }
+         else {
+           hitMeduza.play();
+         }
+
+    if (meduzas[j].hits(ship)) {
+    ship.die();
+
+    }
+    bullets[i].dissappear();
+    }
+
+    }
+    }
+
+    for (var i = 0; i < bullets.length; i++){
+      bullets[i].show();
+      bullets[i].shoot();
+      for (var j = 0; j < flyingMachine.length; j++) {
+       if (bullets[i].hitsZorg(flyingMachine[j])) {
+         flyingMachineHealth[j]--;
+         //console.log(meduzaHealth[j],j);
+
+         if (flyingMachineHealth[j]==0) {
+           flyingMachine[j].die();
+           flyingMachineHealth[j] = flyingMachineHealth[j+1];
+           explozionUfo.play();
+         }
+         else {
+           hitMeduza.play();
+         }
+    bullets[i].dissappear();
+    }
+
+    }
+    }
+    var edge = false;
+    for (var i = 0; i < aliens.length; i++) {
+      aliens[i].show();
+      aliens[i].move();
+      if (aliens[i].x>width || aliens[i].x<0) {
+        edge=true;
+
+      }
+
+    }
+    for (var i = 0; i < flyingMachine.length; i++) {
+      flyingMachine[i].show();
+      flyingMachine[i].move();
+      if ( flyingMachine[i].x<0) {
+        machineDown=true;
+
+      }
+      if (flyingMachine[i].x>width) {
+        otherDirection=true;
+      }
+
+    }
+	if(aliens.length == 0){
+		for (var i = 0; i < zorgs.length; i++) {
+      zorgs[i].show();
+      zorgs[i].move();
+      if (zorgs[i].x>width || zorgs[i].x<0) {
+        edge=true;
+
+      }
+
+    }
+	}
+    if(zorgs.length == 0){
+    for (var i = 0; i < meduzas.length; i++) {
+      meduzas[i].show();
+      meduzas[i].move();
+      if (meduzas[i].x>width || meduzas[i].x<0) {
+        edge=true;
+
+      }
+
+    }
+	}
+    if (edge) {
+      for (var i = 0; i < aliens.length; i++) {
+        aliens[i].shiftDown();
+        if (aliens[i].y>=height-60) {
+          clearScreen=true;
+        }
+      }
+    }
+    if (edge && aliens.length==0) {
+      for (var i = 0; i < zorgs.length; i++) {
+        zorgs[i].shiftDown();
+        if (zorgs[i].y>=height-60) {
+          clearScreen=true;
+        }
+      }
+    }
+    if (edge && zorgs.length == 0) {
+      for (var i = 0; i < meduzas.length; i++) {
+        meduzas[i].shiftDown();
+        if (meduzas[i].y>=height-60) {
+          clearScreen=true;
+        }
+      }
+    }
+    if (machineDown) {
+      for (var i = 0; i < flyingMachine.length; i++) {
+        flyingMachine[i].shiftDown();
+        if (flyingMachine[i].y>=height-60) {
+          clearScreen=true;
+        }
+      }
+      machineDown=false;
+    }
+    if (otherDirection) {
+      for (var i = 0; i < flyingMachine.length; i++) {
+        flyingMachine[i].xdir*=-1;
+        otherDirection=false;
+      }
+    }
+    for (var i = bullets.length-1; i >=0 ; i--) {
+  if (bullets[i].toDelete==true) {
+    bullets.splice(i,1);
+  }
+
+  }
+  for (var i = lazers.length-1; i >=0 ; i--) {
+if (lazers[i].toDelete==true) {
+  lazers.splice(i,1);
+}
+
+}
+  for (var i = aliens.length-1; i >=0 ; i--) {
+  if (aliens[i].toDie==true) {
+  aliens.splice(i,1);
+  points+=10;
+  }
+
+  }
+  }
+  for (var i = zorgs.length-1; i >=0 ; i--) {
+  if (zorgs[i].toDie==true) {
+  zorgs.splice(i,1);
+  points+=20;
+
+  }
+
+  }
+  for (var i = meduzas.length-1; i >=0 ; i--) {
+  if (meduzas[i].toDie==true) {
+  meduzas.splice(i,1);
+  points+=30;
+  }
+
+  }
+  for (var i = flyingMachine.length-1; i >=0 ; i--) {
+  if (flyingMachine[i].toDie==true) {
+  flyingMachine.splice(i,1);
+  points+=50;
+
+  }
+
+  }
+  if (aliens.length==0 && zorgs.length==0 && meduzas.length==0) {
+    win=true;
+  }
+    //console.log(aliens.length, zorgs.length, meduzas.length);
+//fly();
+  }
+
+
+function animAliens() {
+  for (var i = 0; i < aliens.length; i++) {
+aliens[i].animate();
+
+  }
+  setTimeout(animAliens, 1000);
+}
+function animZorgs() {
+  for (var i = 0; i < zorgs.length; i++) {
+zorgs[i].animate();
+
+  }
+  setTimeout(animZorgs, 1000);
+}
+function animMeduzas() {
+  for (var i = 0; i < meduzas.length; i++) {
+meduzas[i].animate();
+
+
+  }
+  setTimeout(animMeduzas, 1000);
+}
+function attack(){
+	if(aliens.length!=0){
+  var index = random(0,aliens.length);
+  index=floor(index);
+  var lazer = new Lazer(aliens[index].x,aliens[index].y);
+  lazers.push(lazer);
+  setTimeout(attack,3000);
+	}
+	if(aliens.length==0 && zorgs.length!=0){
+		var index = random(0,zorgs.length);
+  index=floor(index);
+  var lazer = new Lazer(zorgs[index].x,zorgs[index].y);
+  lazers.push(lazer);
+  setTimeout(attack,3000);
+	}
+	if(aliens.length==0 && zorgs.length == 0){
+		var index = random(0,meduzas.length);
+  index=floor(index);
+  var lazer = new Lazer(meduzas[index].x,meduzas[index].y);
+  lazers.push(lazer);
+  setTimeout(attack,3000);
+	}
+}
+function fly() {
+  flying.play();
+  setTimeout(fly, 16000);
+}
+function keyReleased() {
+  if (key != ' ') {
+    ship.setDir(0);
+  }
+}
+
+
+function keyPressed() {
+  if (key === ' ') {
+    if (ammo>0) {
+      //console.log(ammo);
+      var bullet = new Bullet(ship.x+25, height);
+      bullets.push(bullet);
+      shooting.play();
+      ammo--;
+    }
+    else {
+      clearScreen=true;
+    }
+
+
+  }
+
+  if (keyCode === RIGHT_ARROW) {
+    ship.setDir(1);
+
+  } else if (keyCode === LEFT_ARROW) {
+    ship.setDir(-1);
+
+  }
+
+
+}
